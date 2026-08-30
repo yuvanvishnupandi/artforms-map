@@ -1,22 +1,38 @@
-# Interactive Art Map
-**by Yuvan Vishnu Pandi**
+# Artforms Map
 
-A highly interactive, bespoke digital museum archive mapping traditional art forms across India. Built with React and Leaflet.
+An interactive map exploring traditional art forms across India.
+
+## Install
+
+```bash
+$ git clone https://github.com/yuvanvishnupandi/artforms-map.git
+$ cd artforms-map
+$ npm install
+```
+
+## Usage
+
+Start the development server:
+
+```bash
+$ npm run dev
+```
+
+The application will be available at the local URL shown in the terminal.
 
 ## Features
-- **Interactive Cartography:** A fully custom, grayscale map design that allows traditional art markers to stand out.
-- **Classic Historical Aesthetic:** Elegant typography and a parchment-inspired palette mimicking a high-end museum exhibit.
-- **Split-Screen Gallery Viewer:** Real-time fetching of high-resolution Wikipedia archives and summaries presented in a beautiful split-screen modal.
-- **Exhibition Guide:** A sliding glossary panel that contextualizes all art categories in a clean, readable format.
 
-## Tech Stack
-- **React 19**
-- **Vite**
-- **Leaflet & React-Leaflet**
-- **Framer Motion**
-- **Lucide React**
+- Interactive map with art forms mapped across India
+- Artwork and art-form details
+- Split-screen gallery viewer
+- Historical summaries and references
+- Responsive layout
+- Animated interactions and transitions
 
-## Running Locally
-1. Install dependencies: `npm install`
-2. Run the development server: `npm run dev`
-3. Open the application at `http://localhost:5173/`
+## Stack
+
+React · Vite · Leaflet · React-Leaflet · Framer Motion · Lucide React
+
+## License
+
+MIT
