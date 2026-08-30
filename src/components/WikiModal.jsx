@@ -17,36 +17,38 @@ export default function WikiModal({ tradition, onClose }) {
 
     const fetchWiki = async () => {
       try {
-        // 1. Try exact name match
-        let response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(tradition.name)}`);
-        let data = await response.json();
-
-        // 2. If no image or 404, fallback to Wikipedia Search to find the closest match
-        if (!response.ok || !data.thumbnail) {
-          const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(tradition.name)}&utf8=&format=json&origin=*`);
-          const searchData = await searchRes.json();
-          if (searchData.query && searchData.query.search.length > 0) {
-            const bestHit = searchData.query.search[0].title;
-            response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(bestHit)}`);
-            data = await response.json();
+        const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(tradition.name)}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.original && data.original.source) {
+            setWikiImage(data.original.source);
+          } else if (data.thumbnail && data.thumbnail.source) {
+            setWikiImage(data.thumbnail.source);
+          } else {
+            throw new Error("No image found on page");
           }
-        }
-
-        if (data.original && data.original.source) {
-          setWikiImage(data.original.source); // Always grab the highest quality original image
-        } else if (data.thumbnail && data.thumbnail.source) {
-          setWikiImage(data.thumbnail.source); // Fallback to thumbnail if original is missing
+          if (data.content_urls && data.content_urls.desktop) {
+            setWikiLink(data.content_urls.desktop.page);
+          }
         } else {
-          // If Wikipedia has NO images anywhere for this, use a stunning generic Indian architecture image
-          setWikiImage('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg');
-        }
-
-        if (data.content_urls && data.content_urls.desktop) {
-           setWikiLink(data.content_urls.desktop.page);
+          throw new Error("Page not found");
         }
       } catch (err) {
-        console.error("Failed to fetch wiki data", err);
-        setWikiImage('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg');
+        // Safe, hardcoded fallbacks for missing/404 Wikipedia pages to prevent wrong images
+        const fallbackImages = {
+          "Gond art": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Gond_Painting_of_MP1.JPG/800px-Gond_Painting_of_MP1.JPG",
+          "Phad painting": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Phad_painting_of_Pabuji.jpg/800px-Phad_painting_of_Pabuji.jpg"
+        };
+        const fallbackLinks = {
+          "Gond art": "https://en.wikipedia.org/wiki/Indian_painting#Gond_painting",
+          "Phad painting": "https://en.wikipedia.org/wiki/Phad_painting"
+        };
+        
+        setWikiImage(fallbackImages[tradition.name] || 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg');
+        if (fallbackLinks[tradition.name]) {
+           setWikiLink(fallbackLinks[tradition.name]);
+        }
       } finally {
         setLoading(false);
       }
@@ -132,7 +134,7 @@ export default function WikiModal({ tradition, onClose }) {
                 <p className="wiki-category" style={{ color: category.color }}>
                    {category.label}
                 </p>
-                <h1 id="wiki-title" className="wiki-title">{tradition.name}</h1>
+                <h1 id="wiki-title" className="wiki-title">{tradition.displayName || tradition.name}</h1>
                 <p className="wiki-region">Origin: {tradition.region}</p>
               </motion.header>
 
