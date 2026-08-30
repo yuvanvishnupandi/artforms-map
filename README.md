@@ -31,7 +31,7 @@ The application will be available at the local URL shown in the terminal.
 
 ## Stack
 
-React · Vite · Leaflet · React-Leaflet · Framer Motion · Lucide React
+React · Vite · Leaflet · React-Leaflet · Lucide React
 
 ## License
 
