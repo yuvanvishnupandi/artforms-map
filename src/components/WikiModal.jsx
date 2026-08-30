@@ -37,15 +37,15 @@ export default function WikiModal({ tradition, onClose }) {
       } catch (err) {
         // Safe, hardcoded fallbacks for missing/404 Wikipedia pages to prevent wrong images
         const fallbackImages = {
-          "Gond art": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Gond_Painting_of_MP1.JPG/800px-Gond_Painting_of_MP1.JPG",
-          "Phad painting": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Phad_painting_of_Pabuji.jpg/800px-Phad_painting_of_Pabuji.jpg"
+          "Gond art": "https://upload.wikimedia.org/wikipedia/commons/0/02/Gond_Painting_of_MP1.JPG",
+          "Phad painting": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Taj_Mahal_%28Edited%29.jpeg"
         };
         const fallbackLinks = {
           "Gond art": "https://en.wikipedia.org/wiki/Indian_painting#Gond_painting",
           "Phad painting": "https://en.wikipedia.org/wiki/Phad_painting"
         };
         
-        setWikiImage(fallbackImages[tradition.name] || 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg');
+        setWikiImage(fallbackImages[tradition.name] || 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Taj_Mahal_%28Edited%29.jpeg');
         if (fallbackLinks[tradition.name]) {
            setWikiLink(fallbackLinks[tradition.name]);
         }
