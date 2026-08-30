@@ -1,13 +1,12 @@
-// The data stays declarative: add a tradition here and the map, filters, and glossary update with it.
-const categories = {
-  painting: { label: "Painting", color: "#f29bb7", definition: "Narrative and decorative image-making, often rooted in local materials, ritual storytelling, and inherited visual languages." },
-  textile: { label: "Textile & Weave", color: "#c1a6f2", definition: "Art made through thread, loom, dye, and surface pattern. Textiles carry memory, status, devotion, and regional identity through everyday use." },
-  dance: { label: "Dance", color: "#f2a568", definition: "Embodied storytelling shaped by rhythm, gesture, music, and oral transmission. Dance keeps mythology and community history moving through generations." },
-  theatre: { label: "Theatre & Music", color: "#8fc9e9", definition: "Performing traditions that combine voice, instrument, costume, stagecraft, and narrative to turn shared histories into living events." },
-  craft: { label: "Craft & Sculpture", color: "#9fcf9b", definition: "Skilled making in clay, metal, wood, stone, and natural materials. These practices connect utility, ceremony, ecology, and hand knowledge." }
+export const categories = {
+  painting: { label: "Painting", color: "#C17767", definition: "Narrative and decorative image-making, often rooted in local materials, ritual storytelling, and inherited visual languages." },
+  textile: { label: "Textile & Weave", color: "#4A6C6F", definition: "Art made through thread, loom, dye, and surface pattern. Textiles carry memory, status, devotion, and regional identity through everyday use." },
+  dance: { label: "Dance", color: "#D6A254", definition: "Embodied storytelling shaped by rhythm, gesture, music, and oral transmission. Dance keeps mythology and community history moving through generations." },
+  theatre: { label: "Theatre & Music", color: "#685044", definition: "Performing traditions that combine voice, instrument, costume, stagecraft, and narrative to turn shared histories into living events." },
+  craft: { label: "Craft & Sculpture", color: "#8B9582", definition: "Skilled making in clay, metal, wood, stone, and natural materials. These practices connect utility, ceremony, ecology, and hand knowledge." }
 };
 
-const traditions = [
+export const traditions = [
   { name: "Madhubani Painting", category: "painting", region: "Mithila, Bihar", coords: [26.35, 86.08], image: "Madhubani", summary: "Madhubani painting grew from ritual wall and floor images made by women of the Mithila region. Its dense lines, flat color, and symbolic fish, birds, and deities create a vivid visual grammar. The form carries domestic knowledge and celebrates festivals, fertility, and local ecology." },
   { name: "Warli Painting", category: "painting", region: "Palghar, Maharashtra", coords: [19.70, 72.77], image: "Warli", summary: "Warli painting comes from the Warli communities of Maharashtra and traditionally appeared on the walls of homes during marriage ceremonies. Simple white figures made from rice paste move through scenes of farming, hunting, music, and ritual. Its geometric visual language turns community life into a shared record." },
   { name: "Kalamkari", category: "painting", region: "Machilipatnam, Andhra Pradesh", coords: [16.18, 81.13], image: "Kalamkari", summary: "Kalamkari means ‘drawing with a pen’ and refers to hand-painted or block-printed cotton. Artisans build intricate mythological scenes with natural dyes, using a bamboo or date-palm pen. The textile tradition remains closely linked to temple storytelling and trade." },
@@ -33,102 +32,3 @@ const traditions = [
   { name: "Terracotta Horses", category: "craft", region: "Bankura, West Bengal", coords: [23.23, 87.07], image: "Terracotta Horses", summary: "Bankura’s elongated terracotta horses are among Bengal’s most recognizable craft forms. Shaped by hand and fired in local kilns, they serve as offerings and emblems of strength, protection, and village identity. Their stylized silhouettes show how ritual objects can become icons of modern design." },
   { name: "Bidriware", category: "craft", region: "Bidar, Karnataka", coords: [17.91, 77.52], image: "Bidriware", summary: "Bidriware is a metal inlay craft from Bidar, made by engraving a dark zinc alloy and filling the grooves with silver. The contrast between blackened metal and luminous inlay gives trays, boxes, and vessels their signature depth. Its technique records the Deccan’s layered Persianate and Indian histories." }
 ];
-
-const map = L.map("map", { zoomControl: false, minZoom: 4, maxBounds: [[5, 65], [38, 99]], maxBoundsViscosity: .8 }).setView([22.5, 80], 5);
-L.control.zoom({ position: "bottomleft" }).addTo(map);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: "© OpenStreetMap contributors" }).addTo(map);
-
-const markerLayers = new Map();
-const activeCategories = new Set(Object.keys(categories));
-const searchInput = document.querySelector("#global-search");
-const pills = document.querySelector("#category-pills");
-const resultCount = document.querySelector("#result-count");
-document.querySelector("#location-count").textContent = `${traditions.length} locations`;
-
-function placeholderImage(tradition) {
-  return `https://placehold.co/600x260/273538/f2f0e9?text=${encodeURIComponent(tradition.image)}`;
-}
-
-function popupMarkup(tradition) {
-  const category = categories[tradition.category];
-  return `<article class="tradition-popup" style="--category-color:${category.color}"><img class="popup-image" src="${placeholderImage(tradition)}" alt="Representative placeholder for ${tradition.name}" loading="lazy"><div class="popup-content"><p class="popup-category">${category.label}</p><h2 class="popup-name">${tradition.name}</h2><p class="popup-region">${tradition.region}</p><p class="popup-description">${tradition.summary}</p><span class="popup-tag">Traditional practice</span></div></article>`;
-}
-
-// Draw each tradition as a color-coded circle marker and attach its full context popup.
-traditions.forEach((tradition) => {
-  const color = categories[tradition.category].color;
-  const marker = L.circleMarker(tradition.coords, { radius: 7, color: "#111315", weight: 2, fillColor: color, fillOpacity: 1 }).bindPopup(popupMarkup(tradition), { maxWidth: 310, className: "dark-popup" });
-  marker.addTo(map);
-  markerLayers.set(tradition.name, marker);
-});
-
-function matchingTraditions() {
-  const query = searchInput.value.trim().toLowerCase();
-  return traditions.filter((tradition) => !query || `${tradition.name} ${tradition.region} ${categories[tradition.category].label}`.toLowerCase().includes(query));
-}
-
-function renderPills() {
-  const matches = matchingTraditions();
-  pills.innerHTML = Object.entries(categories).map(([key, category]) => {
-    const count = matches.filter((tradition) => tradition.category === key).length;
-    const active = activeCategories.has(key);
-    return `<button class="category-pill ${active ? "active" : "inactive"}" style="--category-color:${category.color}" data-category="${key}" type="button" aria-pressed="${active}"><span class="category-dot"></span>${category.label}<span class="category-count">${count}</span></button>`;
-  }).join("");
-  resultCount.textContent = `${matches.length} / ${traditions.length} forms`;
-}
-
-function updateMarkers() {
-  const matches = new Set(matchingTraditions().map((tradition) => tradition.name));
-  traditions.forEach((tradition) => {
-    const marker = markerLayers.get(tradition.name);
-    const shouldShow = activeCategories.has(tradition.category) && matches.has(tradition.name);
-    if (shouldShow && !map.hasLayer(marker)) marker.addTo(map);
-    if (!shouldShow && map.hasLayer(marker)) map.removeLayer(marker);
-  });
-  renderPills();
-}
-
-pills.addEventListener("click", (event) => {
-  const pill = event.target.closest(".category-pill");
-  if (!pill) return;
-  const key = pill.dataset.category;
-  activeCategories.has(key) ? activeCategories.delete(key) : activeCategories.add(key);
-  updateMarkers();
-});
-searchInput.addEventListener("input", updateMarkers);
-
-document.querySelector("#random-button").addEventListener("click", () => {
-  const choices = matchingTraditions().filter((tradition) => activeCategories.has(tradition.category));
-  const pool = choices.length ? choices : matchingTraditions();
-  if (!pool.length) return;
-  const tradition = pool[Math.floor(Math.random() * pool.length)];
-  activeCategories.add(tradition.category);
-  updateMarkers();
-  map.flyTo(tradition.coords, 7, { duration: 1 });
-  markerLayers.get(tradition.name).openPopup();
-});
-
-document.querySelector("#clear-button").addEventListener("click", () => {
-  searchInput.value = "";
-  Object.keys(categories).forEach((key) => activeCategories.add(key));
-  updateMarkers();
-  map.flyTo([22.5, 80], 5, { duration: .8 });
-});
-
-const glossaryPanel = document.querySelector("#glossary-panel");
-function setGlossary(open) {
-  glossaryPanel.classList.toggle("open", open);
-  glossaryPanel.setAttribute("aria-hidden", String(!open));
-  document.querySelector("#glossary-toggle").setAttribute("aria-expanded", String(open));
-}
-document.querySelector("#glossary-toggle").addEventListener("click", () => setGlossary(true));
-document.querySelector("#glossary-close").addEventListener("click", () => setGlossary(false));
-document.querySelector("#glossary-backdrop").addEventListener("click", () => setGlossary(false));
-document.addEventListener("keydown", (event) => { if (event.key === "Escape") setGlossary(false); });
-
-document.querySelector("#glossary-content").innerHTML = Object.entries(categories).map(([key, category]) => {
-  const entries = traditions.filter((tradition) => tradition.category === key).map((tradition) => `<div class="glossary-item"><h3>${tradition.name}</h3><p>${tradition.region} · ${tradition.summary.split(".")[0]}.</p></div>`).join("");
-  return `<section class="glossary-category" style="--category-color:${category.color}"><h2><span class="category-dot"></span>${category.label}</h2><p class="category-definition">${category.definition}</p>${entries}</section>`;
-}).join("");
-
-renderPills();

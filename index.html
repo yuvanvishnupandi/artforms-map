@@ -1,49 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="An interactive atlas of traditional Indian art forms and the places that keep them alive.">
-  <title>Interactive Art Map | Indian Traditions</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main class="app-shell">
-    <header class="top-bar">
-      <a class="brand" href="index.html" aria-label="Interactive Art Map home"><span class="brand-icon">✦</span><span>Art / Atlas</span></a>
-      <div class="search-shell">
-        <span class="search-icon" aria-hidden="true">⌕</span>
-        <input id="global-search" type="search" placeholder="Search forms or places" autocomplete="off" aria-label="Search forms or places">
-        <span id="result-count" class="result-count">25 forms</span>
-      </div>
-      <button id="glossary-toggle" class="outline-button" type="button" aria-expanded="false" aria-controls="glossary-panel"><span class="menu-icon">☰</span> Glossary</button>
-    </header>
-
-    <section class="filter-bar" aria-label="Art category filters">
-      <div id="category-pills" class="category-pills"></div>
-      <div class="text-actions"><button id="random-button" type="button">Show me something <span>↗</span></button><button id="clear-button" type="button">Clear all</button></div>
-    </section>
-
-    <section class="map-stage" aria-label="Interactive map of traditional Indian art forms">
-      <div id="map"></div>
-      <div class="map-label"><span class="pulse-dot"></span> Living traditions / India</div>
-      <div class="map-meta"><span id="location-count">24 locations</span> <span></span> 5 categories</div>
-      <div class="map-attribution">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a></div>
-    </section>
-
-    <aside id="glossary-panel" class="glossary-panel" aria-hidden="true">
-      <div class="glossary-head"><div><p class="kicker">Field guide / 01</p><h1>Art forms<br><em>in context.</em></h1></div><button id="glossary-close" class="close-button" type="button" aria-label="Close glossary">×</button></div>
-      <p class="glossary-intro">A quick guide to the practices on this map, and the communities that carry them forward.</p>
-      <div id="glossary-content" class="glossary-content"></div>
-    </aside>
-    <div id="glossary-backdrop" class="glossary-backdrop"></div>
-  </main>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Art Map</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
