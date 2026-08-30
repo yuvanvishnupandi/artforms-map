@@ -1,16 +1,22 @@
-# React + Vite
+# Interactive Art Map
+**by Yuvan Vishnu Pandi**
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A highly interactive, bespoke digital museum archive mapping traditional art forms across India. Built with React and Leaflet.
 
-Currently, two official plugins are available:
+## Features
+- **Interactive Cartography:** A fully custom, grayscale map design that allows traditional art markers to stand out.
+- **Classic Historical Aesthetic:** Elegant typography and a parchment-inspired palette mimicking a high-end museum exhibit.
+- **Split-Screen Gallery Viewer:** Real-time fetching of high-resolution Wikipedia archives and summaries presented in a beautiful split-screen modal.
+- **Exhibition Guide:** A sliding glossary panel that contextualizes all art categories in a clean, readable format.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
+- **React 19**
+- **Vite**
+- **Leaflet & React-Leaflet**
+- **Framer Motion**
+- **Lucide React**
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Running Locally
+1. Install dependencies: `npm install`
+2. Run the development server: `npm run dev`
+3. Open the application at `http://localhost:5173/`
