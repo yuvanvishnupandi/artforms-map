@@ -44,7 +44,7 @@ export default function Glossary({ isOpen, onClose, openWiki }) {
                     <p className="category-definition">{category.definition}</p>
                     {entries.map((tradition) => (
                       <div key={tradition.name} className="glossary-item" onClick={() => { openWiki(tradition); onClose(); }} style={{ cursor: 'pointer' }}>
-                        <h3 className="glossary-item-title">{tradition.name}</h3>
+                        <h3 className="glossary-item-title">{tradition.displayName || tradition.name}</h3>
                         <p>{tradition.region} · {tradition.summary.split(".")[0]}.</p>
                         <span className="read-more-inline">Read full record ➔</span>
                       </div>
