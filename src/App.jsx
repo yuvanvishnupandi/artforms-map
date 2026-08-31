@@ -88,6 +88,7 @@ export default function App() {
         activeTradition={activeTradition}
         onPopupClose={() => setActiveTradition(null)}
         openWiki={openWiki}
+        wikiTradition={wikiTradition}
       />
 
       <Glossary 

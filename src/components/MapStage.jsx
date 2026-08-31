@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, CircleMarker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, useMap, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { categories } from '../data';
 
@@ -14,7 +14,7 @@ function MapController({ center, zoom }) {
   return null;
 }
 
-export default function MapStage({ traditions, activeTradition, onPopupClose, openWiki }) {
+export default function MapStage({ traditions, activeTradition, onPopupClose, openWiki, wikiTradition }) {
   return (
     <section className="map-stage" aria-label="Interactive map of traditional Indian art forms">
       <MapContainer 
@@ -33,6 +33,7 @@ export default function MapStage({ traditions, activeTradition, onPopupClose, op
         
         {traditions.map((tradition) => {
           const color = categories[tradition.category].color;
+          const isSelected = wikiTradition && wikiTradition.name === tradition.name;
 
           return (
             <CircleMarker
@@ -50,7 +51,20 @@ export default function MapStage({ traditions, activeTradition, onPopupClose, op
                 }
               }}
               pathOptions={{ cursor: 'pointer', className: 'elegant-marker' }}
-            />
+            >
+              <Tooltip 
+                permanent={isSelected}
+                direction="right" 
+                className="custom-map-label" 
+                offset={[10, 0]}
+              >
+                <div className="map-label-content">
+                  <span className="map-label-category">Indian Art Form</span>
+                  <span className="map-label-name">{tradition.name.toUpperCase()}</span>
+                  <span className="map-label-region">{tradition.region}</span>
+                </div>
+              </Tooltip>
+            </CircleMarker>
           );
         })}
         
